@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+}
+
+body * {
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+menu,
+nav,
+p {
+    margin: 0;
+    padding: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+
+figure {
+    margin: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+}
+
+input,
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+button>svg {
+    vertical-align: middle;
+}
+
+input {
+    all: unset;
+}
+
+/**** theme ****/
+
+.theme {
+    background-color: var(--bgr-primary);
+    color: var(--text-primary);
+}
+
+.theme_color_light {
+    --bgr-primary: #fff;
+    --text-primary: #000;
+    --bgr-secondary: #d8d8d8;
+    --text-secondary: #949494;
+    --bgr-accent: #ff6b15;
+    --text-accent: #fff;
+}
+
+.theme_color_dark {
+    --bgr-primary: #232323;
+    --text-primary: #fff;
+    --bgr-secondary: #383838;
+    --text-secondary: #fff;
+    --bgr-accent: #e15016;
+    --text-accent: #fff;
+}
+
+.theme_size_default {
+    --xxxs: 4px;
+    --xxs: 8px;
+    --xs: 12px;
+    --s: 16px;
+    --m: 24px;
+    --l: 32px;
+    --xl: 48px;
+    --xxl: 72px;
+    --xxxl: 96px;
+}
