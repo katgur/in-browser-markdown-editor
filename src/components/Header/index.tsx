@@ -4,13 +4,14 @@ import Logo from "../../assets/logo.svg?react";
 import DocumentIcon from "../../assets/icon-document.svg?react";
 import DeleteIcon from "../../assets/icon-delete.svg?react";
 import SaveIcon from "../../assets/icon-save.svg?react";
+import { useState } from "react";
 
 const HeaderWrapper = styled.header`
     display: flex;
     align-items: center;
     height: var(--xxl);
     &>* {
-        margin-right: 1.5em;
+        margin-right: 1.2em;
     }
 `;
 
@@ -34,7 +35,7 @@ const DeleteButton = styled.button`
     margin-left: auto;
     &:hover {
         color: var(--bgr-accent);
-        transition: all 0.1s ease-out allow-discrete;
+        transition: all 0.3s ease-out allow-discrete;
     }
 `;
 
@@ -48,7 +49,12 @@ const SaveButton = styled.button`
 `;
 
 const SaveText = styled.span`
-    margin-left: 0.5em;
+    display: none;
+
+    @media (min-width: 768px) {
+        margin-left: 0.5em;
+        display: inline-block;
+    }
 `;
 
 const DocumentSection = styled.div`
@@ -58,45 +64,77 @@ const DocumentSection = styled.div`
 `;
 
 const DocumentHeader = styled.h2`
-    font-size: 0.7em;
-    line-height: 0.7em;
-    color: var(--text-secondary);
+    display: none;
+
+    @media (min-width: 768px) {
+        display: block;
+        font-size: 0.7em;
+        line-height: 0.7em;
+        color: var(--text-secondary);
+    }
 `;
 
 const DocumentInput = styled.input`
-    
+    width: 90%;
+    border-bottom: 1px solid var(--text-secondary);
+    padding-bottom: var(--xxxs);
 `;
 
 const Divider = styled.div`
-    width: 1px;
-    height: 60%;
-    background-color: var(--text-secondary);
+    display: none;
+
+    @media (min-width: 768px) {
+        display: block;
+        width: 1px;
+        height: 60%;
+        background-color: var(--text-secondary);
+    }
+`;
+
+const LogoSection = styled.div`
+    display: none;
+
+    @media (min-width: 768px) {
+        display: block;
+    }
 `;
 
 function Header() {
+    const [isDocumentInputVisible, setDocumentInputVisible] = useState<boolean>(false);
+
     return (
         <HeaderWrapper>
             <MenuButton>
                 <BurgerIcon />
             </MenuButton>
-            <Logo />
+            <LogoSection>
+                <Logo />
+            </LogoSection>
             <Divider />
-            <DocumentIcon />
-            <DocumentSection>
-                <DocumentHeader>
-                    Document Name:
-                </DocumentHeader>
-                <DocumentInput />
-            </DocumentSection>
-            <DeleteButton>
-                <DeleteIcon />
-            </DeleteButton>
-            <SaveButton>
-                <SaveIcon />
-                <SaveText>
-                    Save Changes
-                </SaveText>
-            </SaveButton>
+            <DocumentIcon onClick={() => setDocumentInputVisible(!isDocumentInputVisible)} />
+            {isDocumentInputVisible &&
+                <DocumentSection>
+                    <DocumentHeader>
+                        Document Name:
+                    </DocumentHeader>
+                    <DocumentInput />
+                </DocumentSection>
+            }
+            {
+                !isDocumentInputVisible &&
+                <DeleteButton>
+                    <DeleteIcon />
+                </DeleteButton>
+            }
+            {
+                !isDocumentInputVisible &&
+                <SaveButton>
+                    <SaveIcon />
+                    <SaveText>
+                        Save Changes
+                    </SaveText>
+                </SaveButton>
+            }
         </HeaderWrapper>
     )
 }
