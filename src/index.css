@@ -53,43 +53,6 @@ button {
     cursor: pointer;
 }
 
-input {
+input, textarea {
     all: unset;
-}
-
-/**** theme ****/
-
-.theme {
-    background-color: var(--bgr-primary);
-    color: var(--text-primary);
-}
-
-.theme_color_light {
-    --bgr-primary: #fff;
-    --text-primary: #000;
-    --bgr-secondary: #d8d8d8;
-    --text-secondary: #949494;
-    --bgr-accent: #ff6b15;
-    --text-accent: #fff;
-}
-
-.theme_color_dark {
-    --bgr-primary: #232323;
-    --text-primary: #fff;
-    --bgr-secondary: #383838;
-    --text-secondary: hsl(0, 0%, 50%);
-    --bgr-accent: #e15016;
-    --text-accent: #fff;
-}
-
-.theme_size_default {
-    --xxxs: 4px;
-    --xxs: 8px;
-    --xs: 12px;
-    --s: 16px;
-    --m: 24px;
-    --l: 32px;
-    --xl: 48px;
-    --xxl: 72px;
-    --xxxl: 96px;
 }
