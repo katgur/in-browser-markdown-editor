@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Markdown from "markdown-to-jsx";
 import HideIcon from "../../assets/icon-hide-preview.svg?react"
+import { useMarkdownStore } from "../../store";
 
 const PreviewWrapper = styled.div`
     flex: 1;
@@ -32,11 +33,12 @@ const MarkdownContainer = styled.div`
 `;
 
 interface PreviewProps {
-    text: string,
     hidePreview: () => void,
 }
 
-function Preview({ text, hidePreview }: PreviewProps) {
+function Preview({ hidePreview }: PreviewProps) {
+    const currentContent = useMarkdownStore(state => state.currentContent);
+
     return (
         <PreviewWrapper>
             <Title>
@@ -44,7 +46,7 @@ function Preview({ text, hidePreview }: PreviewProps) {
                 <HideIcon onClick={hidePreview} />
             </Title>
             <MarkdownContainer>
-                <Markdown>{text}</Markdown>
+                <Markdown>{currentContent}</Markdown>
             </MarkdownContainer>
         </PreviewWrapper>
     )

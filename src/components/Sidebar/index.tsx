@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import DocumentIcon from "../../assets/icon-document.svg?react";
 import NightIcon from "../../assets/icon-dark-mode.svg?react";
 import DayIcon from "../../assets/icon-light-mode.svg?react";
+import { useMarkdownStore } from "../../store";
 
 const SidebarWrapper = styled.aside`
     background-color: var(--bgr-primary);
@@ -141,13 +142,14 @@ interface SidebarProps {
 }
 
 function Sidebar({ expanded, setLight }: SidebarProps) {
-    const documents = [{ id: 1, name: "New document", date: "04 January 2022" },
-    { id: 2, name: "New document", date: "04 January 2022" }]
+    const documents = useMarkdownStore(state => state.items);
+    const addMarkdown = useMarkdownStore(state => state.add);
+    const setCurrent = useMarkdownStore(state => state.setCurrent);
 
     return (
         <SidebarWrapper $expanded={expanded}>
             <Title>My documents</Title>
-            <NewButton>
+            <NewButton onClick={addMarkdown}>
                 + New Document
             </NewButton>
             <DocumentList>
@@ -159,7 +161,7 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
                             </DocumentIconWrapper>
                             <DocumentItemContent>
                                 <DocumentTitle>{document.date}</DocumentTitle>
-                                <DocumentText>{document.name}</DocumentText>
+                                <DocumentText onClick={() => setCurrent(document.id)}>{document.name}</DocumentText>
                             </DocumentItemContent>
                         </DocumentItem>
                     ))

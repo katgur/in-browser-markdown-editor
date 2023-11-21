@@ -5,6 +5,7 @@ import DocumentIcon from "../../assets/icon-document.svg?react";
 import DeleteIcon from "../../assets/icon-delete.svg?react";
 import SaveIcon from "../../assets/icon-save.svg?react";
 import { useState } from "react";
+import { useMarkdownStore } from "../../store";
 
 const HeaderWrapper = styled.header`
     display: flex;
@@ -15,7 +16,7 @@ const HeaderWrapper = styled.header`
     }
     transform: translateX(0);
     transition: transform .2s ease-out;
-    ${ props => props.$isMenuOpen && css`
+    ${props => props.$isMenuOpen && css`
         transform: translateX(250px);
     `};
 `;
@@ -116,6 +117,12 @@ interface HeaderProps {
 
 function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     const [isDocumentInputVisible, setDocumentInputVisible] = useState<boolean>(false);
+    const setName = useMarkdownStore(state => state.setName);
+
+    const onChangeNameSubmit = (e) => {
+        e.preventDefault();
+        setName(e.target.elements.name.value);
+    }
 
     return (
         <HeaderWrapper $isMenuOpen={isMenuOpen}>
@@ -132,7 +139,9 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
                     <DocumentHeader>
                         Document Name:
                     </DocumentHeader>
-                    <DocumentInput />
+                    <form onSubmit={onChangeNameSubmit}>
+                        <DocumentInput name="name" />
+                    </form>
                 </DocumentSection>
             }
             {

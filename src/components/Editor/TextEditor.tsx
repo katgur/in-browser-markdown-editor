@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ShowIcon from "../../assets/icon-show-preview.svg?react"
+import { useMarkdownStore } from "../../store";
 
 const TextEditorWrapper = styled.div`
     flex: 1;
@@ -30,12 +31,15 @@ const TextEditorArea = styled.textarea`
 `;
 
 interface TextEditorProps {
-    setText: (text: string) => void,
     isPreviewVisible: boolean,
     showPreview: () => void,
 }
 
-function TextEditor({ setText, isPreviewVisible, showPreview }: TextEditorProps) {
+function TextEditor({ isPreviewVisible, showPreview }: TextEditorProps) {
+    const currentContent = useMarkdownStore(state => state.currentContent);
+    const setContent = useMarkdownStore(state => state.setContent);
+
+    console.log(currentContent);
     return (
         <TextEditorWrapper>
             <Title>
@@ -45,7 +49,7 @@ function TextEditor({ setText, isPreviewVisible, showPreview }: TextEditorProps)
                     <ShowIcon onClick={showPreview} />
                 }
             </Title>
-            <TextEditorArea onChange={(e) => setText(e.target.value)} />
+            <TextEditorArea value={currentContent} onChange={(e) => setContent(e.target.value)} />
         </TextEditorWrapper>
     )
 }

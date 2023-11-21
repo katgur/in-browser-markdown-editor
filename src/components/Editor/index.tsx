@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import TextEditor from "./TextEditor";
 import Preview from "./Preview";
 import { useState } from "react";
+import { useMarkdownStore } from "../../store";
 
 const EditorWrapper = styled.div`
     width: 100%;
@@ -20,15 +21,14 @@ interface EditorProps {
 }
 
 function Editor({ isMenuOpen }: EditorProps) {
-    const [text, setText] = useState<string>("");
     const [isPreviewShown, setPreviewShown] = useState<boolean>(true);
 
     return (
         <EditorWrapper $isMenuOpen={isMenuOpen}>
-            <TextEditor setText={setText} isPreviewVisible={isPreviewShown} showPreview={() => setPreviewShown(true)} />
+            <TextEditor isPreviewVisible={isPreviewShown} showPreview={() => setPreviewShown(true)} />
             {
                 isPreviewShown &&
-                <Preview text={text} hidePreview={() => setPreviewShown(false)} />
+                <Preview hidePreview={() => setPreviewShown(false)} />
             }
         </EditorWrapper>
     )
