@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    overflow-x: hidden;
 }
 
 body * {
@@ -52,10 +53,6 @@ button {
     cursor: pointer;
 }
 
-button>svg {
-    vertical-align: middle;
-}
-
 input {
     all: unset;
 }
@@ -80,7 +77,7 @@ input {
     --bgr-primary: #232323;
     --text-primary: #fff;
     --bgr-secondary: #383838;
-    --text-secondary: #fff;
+    --text-secondary: hsl(0, 0%, 50%);
     --bgr-accent: #e15016;
     --text-accent: #fff;
 }
