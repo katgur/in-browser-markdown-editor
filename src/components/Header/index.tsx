@@ -21,7 +21,7 @@ const HeaderWrapper = styled.header`
 `;
 
 const MenuButton = styled.button`
-    background-color: var(--bgr-secondary);
+    background-color: var(--bgr-primary);
     color: var(--text-primary);
     padding-left: var(--m);
     padding-right: var(--m);

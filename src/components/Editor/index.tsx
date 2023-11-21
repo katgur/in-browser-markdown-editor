@@ -2,6 +2,8 @@ import styled from "styled-components";
 import TextEditor from "./TextEditor";
 import Preview from "./Preview";
 import { useState } from "react";
+import HideIcon from "../../assets/icon-hide-preview.svg?react"
+import ShowIcon from "../../assets/icon-show-preview.svg?react"
 
 const TitleWrapper = styled.div`
     display: flex;
@@ -17,6 +19,12 @@ const Title = styled.h2`
     font-weight: normal;
     text-transform: uppercase;
     flex: 1;
+    display: flex;
+    justify-content: space-between;
+
+    &:first-child {
+        border-right: 2px solid var(--text-secondary);
+    }
 `;
 
 const EditorWrapper = styled.div`
@@ -28,16 +36,30 @@ const EditorWrapper = styled.div`
 
 function Editor() {
     const [text, setText] = useState<string>("");
+    const [isPreviewShown, setPreviewShown] = useState<boolean>(true);
 
     return (
         <div>
             <TitleWrapper>
-                <Title>Markdown</Title>
-                <Title>Preview</Title>
+                <Title>
+                    Markdown
+                    {
+                        !isPreviewShown && <ShowIcon onClick={() => setPreviewShown(true)} />
+                    }
+                </Title>
+                {
+                    isPreviewShown && <Title>
+                        Preview
+                        <HideIcon onClick={() => setPreviewShown(false)} />
+                    </Title>
+                }
             </TitleWrapper>
             <EditorWrapper>
                 <TextEditor setText={setText} />
-                <Preview text={text} />
+                {
+                    isPreviewShown &&
+                    <Preview text={text} />
+                }
             </EditorWrapper>
         </div>
     )
