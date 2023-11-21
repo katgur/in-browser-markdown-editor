@@ -6,6 +6,8 @@ import DayIcon from "../../assets/icon-light-mode.svg?react";
 const SidebarWrapper = styled.aside`
     background-color: var(--bgr-primary);
     color: var(--text-primary);
+    border-right: 2px solid var(--text-secondary);
+    box-sizing: border-box;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -15,7 +17,7 @@ const SidebarWrapper = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    transform: translateX(-250px);
+    transform: translateX(-254px);
     transition: transform .2s ease-out;
     ${props => props.$expanded && css`
         transform: translateX(0);
@@ -135,12 +137,13 @@ const CheckboxInput = styled.input.attrs((props: MyCheckboxProps) => ({
 
 interface SidebarProps {
     expanded: boolean,
+    setLight: (isLight: boolean) => void,
 }
 
-function Sidebar({ expanded }: SidebarProps) {
+function Sidebar({ expanded, setLight }: SidebarProps) {
     const documents = [{ id: 1, name: "New document", date: "04 January 2022" },
     { id: 2, name: "New document", date: "04 January 2022" }]
-    let checked, onChange;
+
     return (
         <SidebarWrapper $expanded={expanded}>
             <Title>My documents</Title>
@@ -164,7 +167,7 @@ function Sidebar({ expanded }: SidebarProps) {
             </DocumentList>
             <Label>
                 <NightIcon />
-                <CheckboxInput {...{ checked, onChange }} />
+                <CheckboxInput onChange={(e) => setLight(e.target.checked)} />
                 <CheckboxSlider>
                 </CheckboxSlider>
                 <DayIcon />

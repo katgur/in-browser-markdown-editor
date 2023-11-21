@@ -23,7 +23,7 @@ const TextEditorArea = styled.textarea`
     font-family: monospace;
     font-size: 1.5em;
     overflow-wrap: normal;
-    background-color: black;
+    background-color: var(--bgr-primary);
     color: var(--text-primary);
     height: calc(100% - 48px);
     width: 100%;
