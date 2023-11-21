@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import BurgerIcon from "../../assets/icon-menu.svg?react";
 import Logo from "../../assets/logo.svg?react";
 import DocumentIcon from "../../assets/icon-document.svg?react";
@@ -13,11 +13,16 @@ const HeaderWrapper = styled.header`
     &>* {
         margin-right: 1.2em;
     }
+    transform: translateX(0);
+    transition: transform .2s ease-out;
+    ${ props => props.$isMenuOpen && css`
+        transform: translateX(250px);
+    `};
 `;
 
 const MenuButton = styled.button`
     background-color: var(--bgr-secondary);
-    color: var(--text-secondary);
+    color: var(--text-primary);
     padding-left: var(--m);
     padding-right: var(--m);
     height: 100%;
@@ -46,6 +51,11 @@ const SaveButton = styled.button`
     padding: var(--xs) var(--m);
     font-size: 1em;
     line-height: 1em;
+    text-transform: capitalize;
+
+    svg {
+        vertical-align: middle;
+    }
 `;
 
 const SaveText = styled.span`
@@ -99,12 +109,17 @@ const LogoSection = styled.div`
     }
 `;
 
-function Header() {
+interface HeaderProps {
+    isMenuOpen: boolean,
+    switchMenuOpen: () => void,
+}
+
+function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     const [isDocumentInputVisible, setDocumentInputVisible] = useState<boolean>(false);
 
     return (
-        <HeaderWrapper>
-            <MenuButton>
+        <HeaderWrapper $isMenuOpen={isMenuOpen}>
+            <MenuButton onClick={switchMenuOpen}>
                 <BurgerIcon />
             </MenuButton>
             <LogoSection>
