@@ -1,67 +1,36 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import TextEditor from "./TextEditor";
 import Preview from "./Preview";
 import { useState } from "react";
-import HideIcon from "../../assets/icon-hide-preview.svg?react"
-import ShowIcon from "../../assets/icon-show-preview.svg?react"
-
-const TitleWrapper = styled.div`
-    display: flex;
-`;
-
-const Title = styled.h2`
-    padding: var(--s);
-    font-size: var(--s);
-    line-height: 1em;
-    letter-spacing: 0.2em;
-    color: var(--text-secondary);
-    background-color: var(--bgr-secondary);
-    font-weight: normal;
-    text-transform: uppercase;
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-
-    &:first-child {
-        border-right: 2px solid var(--text-secondary);
-    }
-`;
 
 const EditorWrapper = styled.div`
-    display: flex;
     width: 100%;
-    height: calc(100% - 72px - 48px);
+    display: flex;
     position: fixed;
+    transform: translateX(0);
+    transition: transform .2s ease-out;
+    ${props => props.$isMenuOpen && css`
+        transform: translateX(250px);
+    `};
+    height: calc(100% - 72px);
 `;
 
-function Editor() {
+interface EditorProps {
+    isMenuOpen: boolean,
+}
+
+function Editor({ isMenuOpen }: EditorProps) {
     const [text, setText] = useState<string>("");
     const [isPreviewShown, setPreviewShown] = useState<boolean>(true);
 
     return (
-        <div>
-            <TitleWrapper>
-                <Title>
-                    Markdown
-                    {
-                        !isPreviewShown && <ShowIcon onClick={() => setPreviewShown(true)} />
-                    }
-                </Title>
-                {
-                    isPreviewShown && <Title>
-                        Preview
-                        <HideIcon onClick={() => setPreviewShown(false)} />
-                    </Title>
-                }
-            </TitleWrapper>
-            <EditorWrapper>
-                <TextEditor setText={setText} />
-                {
-                    isPreviewShown &&
-                    <Preview text={text} />
-                }
-            </EditorWrapper>
-        </div>
+        <EditorWrapper $isMenuOpen={isMenuOpen}>
+            <TextEditor setText={setText} isPreviewVisible={isPreviewShown} showPreview={() => setPreviewShown(true)} />
+            {
+                isPreviewShown &&
+                <Preview text={text} hidePreview={() => setPreviewShown(false)} />
+            }
+        </EditorWrapper>
     )
 }
 

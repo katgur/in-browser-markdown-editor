@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import ShowIcon from "../../assets/icon-show-preview.svg?react"
+
+const TextEditorWrapper = styled.div`
+    flex: 1;
+`;
 
 const Title = styled.h2`
     padding: var(--s);
@@ -9,29 +14,39 @@ const Title = styled.h2`
     background-color: var(--bgr-secondary);
     font-weight: normal;
     text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
 `;
 
-const TextEditorWrapper = styled.textarea`
+const TextEditorArea = styled.textarea`
     display: block;
     font-family: monospace;
     font-size: 1.5em;
     overflow-wrap: normal;
     background-color: black;
     color: var(--text-primary);
-    height: 100%;
-    width: calc(100% - 40px);
-    overflow-x: hidden;
-    flex: 1;
-    flex-basis: 100%;
+    height: calc(100% - 48px);
+    width: 100%;
 `;
 
 interface TextEditorProps {
     setText: (text: string) => void,
+    isPreviewVisible: boolean,
+    showPreview: () => void,
 }
 
-function TextEditor({ setText }: TextEditorProps) {
+function TextEditor({ setText, isPreviewVisible, showPreview }: TextEditorProps) {
     return (
-        <TextEditorWrapper onChange={(e) => setText(e.target.value)}></TextEditorWrapper>
+        <TextEditorWrapper>
+            <Title>
+                Markdown
+                {
+                    !isPreviewVisible && 
+                    <ShowIcon onClick={showPreview} />
+                }
+            </Title>
+            <TextEditorArea onChange={(e) => setText(e.target.value)} />
+        </TextEditorWrapper>
     )
 }
 

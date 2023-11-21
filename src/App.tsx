@@ -37,7 +37,7 @@ function App() {
   return (
     <AppWrapper $theme={'light'}>
       <Header isMenuOpen={isMenuOpen} switchMenuOpen={() => setMenuOpen(!isMenuOpen)} />
-      <Editor />
+      <Editor isMenuOpen={isMenuOpen} />
       <Sidebar expanded={isMenuOpen} />
     </AppWrapper>
   )
