@@ -5,6 +5,8 @@ import DocumentIcon from "../../assets/icon-document.svg?react";
 import DeleteIcon from "../../assets/icon-delete.svg?react";
 import SaveIcon from "../../assets/icon-save.svg?react";
 import { useState } from "react";
+import { useMarkdownStore } from "../../store";
+import api from "../../api/markdown";
 
 const HeaderWrapper = styled.header`
     display: flex;
@@ -15,7 +17,7 @@ const HeaderWrapper = styled.header`
     }
     transform: translateX(0);
     transition: transform .2s ease-out;
-    ${ props => props.$isMenuOpen && css`
+    ${props => props.$isMenuOpen && css`
         transform: translateX(250px);
     `};
 `;
@@ -116,6 +118,45 @@ interface HeaderProps {
 
 function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     const [isDocumentInputVisible, setDocumentInputVisible] = useState<boolean>(false);
+    const current = useMarkdownStore(state => state.current);
+    const setItems = useMarkdownStore(state => state.setItems);
+    const setCurrent = useMarkdownStore(state => state.setCurrent);
+
+    const onChangeName = (e) => {
+        setCurrent({ ...current, name: e.target.value });
+    }
+
+    const onNameSubmit = (e) => {
+        e.preventDefault();
+        if (!current) {
+            return;
+        }
+        api.editMarkdown(current.id, { ...current, name: e.target.elements.name.value })
+            .then(data => setItems(data));
+    }
+
+    const onSaveButtonClick = () => {
+        if (!current) {
+            return;
+        }
+        api.editMarkdown(current.id, current)
+            .then(data => setItems(data));
+    }
+
+    const onDeleteButtonClick = () => {
+        if (!current) {
+            return;
+        }
+        api.removeMarkdown(current.id)
+            .then(data => {
+                setItems(data);
+                if (data.length !== 0) {
+                    setCurrent(data[0]);
+                } else {
+                    setCurrent(null);
+                }
+            });
+    }
 
     return (
         <HeaderWrapper $isMenuOpen={isMenuOpen}>
@@ -130,20 +171,25 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
             {isDocumentInputVisible &&
                 <DocumentSection>
                     <DocumentHeader>
-                        Document Name:
+                        Document Name
                     </DocumentHeader>
-                    <DocumentInput />
+                    {
+                        current &&
+                        <form onSubmit={onNameSubmit}>
+                            <DocumentInput name="name" value={current.name} onChange={onChangeName} />
+                        </form>
+                    }
                 </DocumentSection>
             }
             {
                 !isDocumentInputVisible &&
-                <DeleteButton>
+                <DeleteButton onClick={onDeleteButtonClick}>
                     <DeleteIcon />
                 </DeleteButton>
             }
             {
                 !isDocumentInputVisible &&
-                <SaveButton>
+                <SaveButton onClick={onSaveButtonClick}>
                     <SaveIcon />
                     <SaveText>
                         Save Changes

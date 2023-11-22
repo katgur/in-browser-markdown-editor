@@ -2,10 +2,14 @@ import styled, { css } from "styled-components";
 import DocumentIcon from "../../assets/icon-document.svg?react";
 import NightIcon from "../../assets/icon-dark-mode.svg?react";
 import DayIcon from "../../assets/icon-light-mode.svg?react";
+import { useMarkdownStore } from "../../store";
+import api from "../../api/markdown";
 
 const SidebarWrapper = styled.aside`
     background-color: var(--bgr-primary);
     color: var(--text-primary);
+    border-right: 2px solid var(--text-secondary);
+    box-sizing: border-box;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -15,7 +19,7 @@ const SidebarWrapper = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    transform: translateX(-250px);
+    transform: translateX(-254px);
     transition: transform .2s ease-out;
     ${props => props.$expanded && css`
         transform: translateX(0);
@@ -135,16 +139,23 @@ const CheckboxInput = styled.input.attrs((props: MyCheckboxProps) => ({
 
 interface SidebarProps {
     expanded: boolean,
+    setLight: (isLight: boolean) => void,
 }
 
-function Sidebar({ expanded }: SidebarProps) {
-    const documents = [{ id: 1, name: "New document", date: "04 January 2022" },
-    { id: 2, name: "New document", date: "04 January 2022" }]
-    let checked, onChange;
+function Sidebar({ expanded, setLight }: SidebarProps) {
+    const documents = useMarkdownStore(state => state.items);
+    const setCurrent = useMarkdownStore(state => state.setCurrent);
+    const setItems = useMarkdownStore(state => state.setItems);
+    
+    const onNewButtonClick = () => {
+        api.addMarkdown()
+        .then(data => setItems(data));
+    }
+
     return (
         <SidebarWrapper $expanded={expanded}>
             <Title>My documents</Title>
-            <NewButton>
+            <NewButton onClick={onNewButtonClick}>
                 + New Document
             </NewButton>
             <DocumentList>
@@ -156,7 +167,7 @@ function Sidebar({ expanded }: SidebarProps) {
                             </DocumentIconWrapper>
                             <DocumentItemContent>
                                 <DocumentTitle>{document.date}</DocumentTitle>
-                                <DocumentText>{document.name}</DocumentText>
+                                <DocumentText onClick={() => setCurrent(document)}>{document.name}</DocumentText>
                             </DocumentItemContent>
                         </DocumentItem>
                     ))
@@ -164,7 +175,7 @@ function Sidebar({ expanded }: SidebarProps) {
             </DocumentList>
             <Label>
                 <NightIcon />
-                <CheckboxInput {...{ checked, onChange }} />
+                <CheckboxInput onChange={(e) => setLight(e.target.checked)} />
                 <CheckboxSlider>
                 </CheckboxSlider>
                 <DayIcon />
