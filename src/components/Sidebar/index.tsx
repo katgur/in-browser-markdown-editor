@@ -3,6 +3,7 @@ import DocumentIcon from "../../assets/icon-document.svg?react";
 import NightIcon from "../../assets/icon-dark-mode.svg?react";
 import DayIcon from "../../assets/icon-light-mode.svg?react";
 import { useMarkdownStore } from "../../store";
+import api from "../../api/markdown";
 
 const SidebarWrapper = styled.aside`
     background-color: var(--bgr-primary);
@@ -143,13 +144,18 @@ interface SidebarProps {
 
 function Sidebar({ expanded, setLight }: SidebarProps) {
     const documents = useMarkdownStore(state => state.items);
-    const addMarkdown = useMarkdownStore(state => state.add);
     const setCurrent = useMarkdownStore(state => state.setCurrent);
+    const setItems = useMarkdownStore(state => state.setItems);
+    
+    const onNewButtonClick = () => {
+        api.addMarkdown()
+        .then(data => setItems(data));
+    }
 
     return (
         <SidebarWrapper $expanded={expanded}>
             <Title>My documents</Title>
-            <NewButton onClick={addMarkdown}>
+            <NewButton onClick={onNewButtonClick}>
                 + New Document
             </NewButton>
             <DocumentList>
@@ -161,7 +167,7 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
                             </DocumentIconWrapper>
                             <DocumentItemContent>
                                 <DocumentTitle>{document.date}</DocumentTitle>
-                                <DocumentText onClick={() => setCurrent(document.id)}>{document.name}</DocumentText>
+                                <DocumentText onClick={() => setCurrent(document)}>{document.name}</DocumentText>
                             </DocumentItemContent>
                         </DocumentItem>
                     ))

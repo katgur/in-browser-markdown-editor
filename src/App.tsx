@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Header from "./components/Header"
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 import styled, { css } from "styled-components";
+import { useMarkdownStore } from "./store";
+import api from "./api/markdown";
+import { createNew } from "./util/sample";
 
 const AppWrapper = styled.div`
   ${props => props.$isLight ? css`
@@ -13,7 +16,7 @@ const AppWrapper = styled.div`
     --bgr-accent: #ff6b15;
     --text-accent: #fff;
   ` :
-  css`
+    css`
     --bgr-primary: #232323;
     --text-primary: #fff;
     --bgr-secondary: #383838;
@@ -38,8 +41,19 @@ const AppWrapper = styled.div`
 function App() {
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
   const [isLight, setLight] = useState<boolean>(false);
+  const setItems = useMarkdownStore(state => state.setItems);
+  const setCurrent = useMarkdownStore(state => state.setCurrent);
 
-  console.log(isLight)
+  useEffect(() => {
+    api.getMarkdowns()
+      .then(data => {
+        setItems(data);
+        if (data.length !== 0) {
+          setCurrent(data[0]);
+        }
+      });
+  }, [setCurrent, setItems])
+
   return (
     <AppWrapper $isLight={isLight}>
       <Header isMenuOpen={isMenuOpen} switchMenuOpen={() => setMenuOpen(!isMenuOpen)} />

@@ -37,7 +37,7 @@ interface PreviewProps {
 }
 
 function Preview({ hidePreview }: PreviewProps) {
-    const currentContent = useMarkdownStore(state => state.currentContent);
+    const current = useMarkdownStore(state => state.current);
 
     return (
         <PreviewWrapper>
@@ -46,7 +46,10 @@ function Preview({ hidePreview }: PreviewProps) {
                 <HideIcon onClick={hidePreview} />
             </Title>
             <MarkdownContainer>
-                <Markdown>{currentContent}</Markdown>
+                {
+                    current &&
+                    <Markdown>{current.content}</Markdown>
+                }
             </MarkdownContainer>
         </PreviewWrapper>
     )

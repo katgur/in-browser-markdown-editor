@@ -36,20 +36,22 @@ interface TextEditorProps {
 }
 
 function TextEditor({ isPreviewVisible, showPreview }: TextEditorProps) {
-    const currentContent = useMarkdownStore(state => state.currentContent);
-    const setContent = useMarkdownStore(state => state.setContent);
+    const current = useMarkdownStore(state => state.current);
+    const setCurrent = useMarkdownStore(state => state.setCurrent);
 
-    console.log(currentContent);
     return (
         <TextEditorWrapper>
             <Title>
                 Markdown
                 {
-                    !isPreviewVisible && 
+                    !isPreviewVisible &&
                     <ShowIcon onClick={showPreview} />
                 }
             </Title>
-            <TextEditorArea value={currentContent} onChange={(e) => setContent(e.target.value)} />
+            {
+                current &&
+                <TextEditorArea value={current.content} onChange={(e) => setCurrent({ ...current, content: e.target.value })} />
+            }
         </TextEditorWrapper>
     )
 }
