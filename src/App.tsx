@@ -5,10 +5,13 @@ import Editor from "./components/Editor"
 import styled, { css } from "styled-components";
 import { useMarkdownStore } from "./store";
 import api from "./api/markdown";
-import { createNew } from "./util/sample";
 
-const AppWrapper = styled.div`
-  ${props => props.$isLight ? css`
+interface AppWrapperProps {
+  isLight: boolean,
+}
+
+const AppWrapper = styled.div<AppWrapperProps>`
+  ${props => props.isLight ? css`
     --bgr-primary: #fff;
     --text-primary: #000;
     --bgr-secondary: #d8d8d8;
@@ -55,7 +58,7 @@ function App() {
   }, [setCurrent, setItems])
 
   return (
-    <AppWrapper $isLight={isLight}>
+    <AppWrapper isLight={isLight}>
       <Header isMenuOpen={isMenuOpen} switchMenuOpen={() => setMenuOpen(!isMenuOpen)} />
       <Editor isMenuOpen={isMenuOpen} />
       <Sidebar expanded={isMenuOpen} setLight={setLight} />

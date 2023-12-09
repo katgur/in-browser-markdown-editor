@@ -30,7 +30,7 @@ const getItems = () => {
 
 const localApi: MarkdownApi = {
     getMarkdowns: async () => {
-        return await delay(getItems);
+        return getItems();
     },
     addMarkdown: async () => {
         const items = getItems();
