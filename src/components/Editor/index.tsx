@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import TextEditor from "./TextEditor";
 import Preview from "./Preview";
 import { useState } from "react";
-import { useMarkdownStore } from "../../store";
 
 const EditorWrapper = styled.div`
     width: 100%;

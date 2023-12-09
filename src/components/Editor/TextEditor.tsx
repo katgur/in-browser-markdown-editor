@@ -21,13 +21,14 @@ const Title = styled.h2`
 
 const TextEditorArea = styled.textarea`
     display: block;
-    font-family: monospace;
-    font-size: 1.5em;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9em;
     overflow-wrap: normal;
     background-color: var(--bgr-primary);
     color: var(--text-primary);
-    height: calc(100% - 48px);
-    width: 100%;
+    height: calc(100% - 60px);
+    width: calc(100% - 24px);
+    padding: 6px 12px;
 `;
 
 interface TextEditorProps {
