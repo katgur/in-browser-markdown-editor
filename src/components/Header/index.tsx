@@ -4,11 +4,15 @@ import Logo from "../../assets/logo.svg?react";
 import DocumentIcon from "../../assets/icon-document.svg?react";
 import DeleteIcon from "../../assets/icon-delete.svg?react";
 import SaveIcon from "../../assets/icon-save.svg?react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useMarkdownStore } from "../../store";
 import api from "../../api/markdown";
 
-const HeaderWrapper = styled.header`
+interface HeaderWrapperProps {
+    isMenuOpen: boolean,
+}
+
+const HeaderWrapper = styled.header<HeaderWrapperProps>`
     display: flex;
     align-items: center;
     height: var(--xxl);
@@ -17,7 +21,7 @@ const HeaderWrapper = styled.header`
     }
     transform: translateX(0);
     transition: transform .2s ease-out;
-    ${props => props.$isMenuOpen && css`
+    ${props => props.isMenuOpen && css`
         transform: translateX(250px);
     `};
 `;
@@ -122,16 +126,19 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     const setItems = useMarkdownStore(state => state.setItems);
     const setCurrent = useMarkdownStore(state => state.setCurrent);
 
-    const onChangeName = (e) => {
+    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (current === null) {
+            return;
+        }
         setCurrent({ ...current, name: e.target.value });
     }
 
-    const onNameSubmit = (e) => {
+    const onNameSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!current) {
             return;
         }
-        api.editMarkdown(current.id, { ...current, name: e.target.elements.name.value })
+        api.editMarkdown(current.id, { ...current, name: e.currentTarget.value })
             .then(data => setItems(data));
     }
 
@@ -159,7 +166,7 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     }
 
     return (
-        <HeaderWrapper $isMenuOpen={isMenuOpen}>
+        <HeaderWrapper isMenuOpen={isMenuOpen}>
             <MenuButton onClick={switchMenuOpen}>
                 <BurgerIcon />
             </MenuButton>

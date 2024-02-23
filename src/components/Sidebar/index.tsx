@@ -5,7 +5,11 @@ import DayIcon from "../../assets/icon-light-mode.svg?react";
 import { useMarkdownStore } from "../../store";
 import api from "../../api/markdown";
 
-const SidebarWrapper = styled.aside`
+interface SidebarWrapperProps {
+    expanded: boolean
+}
+
+const SidebarWrapper = styled.aside<SidebarWrapperProps>`
     background-color: var(--bgr-primary);
     color: var(--text-primary);
     border-right: 2px solid var(--text-secondary);
@@ -19,122 +23,123 @@ const SidebarWrapper = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    transform: translateX(-254px);
+    transform: translateX(-277px);
     transition: transform .2s ease-out;
-    ${props => props.$expanded && css`
+    ${props => props.expanded && css`
         transform: translateX(0);
     `};
 `;
 
 const Title = styled.h1`
-    font-size: 0.8em;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-weight: normal;
-    color: var(--text-secondary);
+font - size: 0.8em;
+text - transform: uppercase;
+letter - spacing: 0.2em;
+font - weight: normal;
+color: var(--text - secondary);
 `;
 
 const NewButton = styled.button`
-    background-color: var(--bgr-accent);
-    color: var(--text-accent);
-    border-radius: var(--xxxs);
-    padding: var(--xs) var(--m);
-    font-size: 1em;
-    line-height: 1em;
-    text-transform: capitalize;
+background - color: var(--bgr - accent);
+color: var(--text - accent);
+border - radius: var(--xxxs);
+padding: var(--xs) var(--m);
+font - size: 1em;
+line - height: 1em;
+text - transform: capitalize;
     svg {
-        vertical-align: middle;
-    }
+    vertical - align: middle;
+}
 `;
 
 const DocumentList = styled.ul`
 
-`;
+    `;
 
 const DocumentItem = styled.li`
-    padding: 0.5em 0;
-    display: flex;
-    align-items: center;
+padding: 0.5em 0;
+display: flex;
+align - items: center;
 `;
 
 const DocumentItemContent = styled.div`
-`;
+    `;
 
 const DocumentTitle = styled.h2`
-    font-size: 0.8em;
-    line-height: 1.2em;
-    color: var(--text-secondary);
-    font-weight: normal;
+font - size: 0.8em;
+line - height: 1.2em;
+color: var(--text - secondary);
+font - weight: normal;
 `;
 
 const DocumentText = styled.p`
-    font-size: 1em;
-    cursor: pointer;
+font - size: 1em;
+cursor: pointer;
     &:hover {
-        color: var(--bgr-accent);
-    }
+    color: var(--bgr - accent);
+}
 `;
 
 const DocumentIconWrapper = styled.i`
-    float: left;
-    margin-right: 1em;
-    display: inline-block;
-    vertical-align: middle;
+float: left;
+margin - right: 1em;
+display: inline - block;
+vertical - align: middle;
 `;
 
 const Label = styled.label`
-    display: flex;
-    align-items: center;
-    gap: var(--xxs);
-    color: var(--text-secondary);
-    margin-top: auto;
+display: flex;
+align - items: center;
+gap: var(--xxs);
+color: var(--text - secondary);
+margin - top: auto;
 `;
 
 const CheckboxSlider = styled.div`
-    position: relative;
-    width: var(--xl);
-    height: var(--m);
-    border-radius: var(--m);
-    box-sizing: border-box;
-    background-color: var(--text-secondary);
-    cursor: pointer;
+position: relative;
+width: var(--xl);
+height: var(--m);
+border - radius: var(--m);
+box - sizing: border - box;
+background - color: var(--text - secondary);
+cursor: pointer;
 
     &:before {
-        background-color: var(--text-primary);
-        content: "";
-        position: absolute;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        top: 0;
-        bottom: 0;
-        margin-top: auto;
-        margin-bottom: auto;
-        left: 0.2em;
-        transition: .2s ease-out;
-    }
+    background - color: var(--text - primary);
+    content: "";
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    border - radius: 50 %;
+    top: 0;
+    bottom: 0;
+    margin - top: auto;
+    margin - bottom: auto;
+    left: 0.2em;
+    transition: .2s ease - out;
+}
 `;
 
 type MyCheckboxProps = {
     checked?: boolean;
-    onChange?: () => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const CheckboxInput = styled.input.attrs((props: MyCheckboxProps) => ({
+const CheckboxInput = styled.input.attrs<MyCheckboxProps>(props => ({
     type: 'checkbox',
     ...props,
 }))`
-    display: none;
 
-    &:checked + ${CheckboxSlider} {
-        background-color: var(--bgr-accent);
-        transition: .2s ease-out;
+display: none;
+
+    &: checked + ${ CheckboxSlider } {
+    background - color: var(--bgr - accent);
+    transition: .2s ease - out;
 
         &:before {
-            transition: .2s ease-out;
-            transform: translateX(24px);
-        }
+        transition: .2s ease - out;
+        transform: translateX(24px);
     }
+}
 `;
 
 interface SidebarProps {
@@ -153,7 +158,7 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
     }
 
     return (
-        <SidebarWrapper $expanded={expanded}>
+        <SidebarWrapper expanded={expanded}>
             <Title>My documents</Title>
             <NewButton onClick={onNewButtonClick}>
                 + New Document
@@ -175,7 +180,7 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
             </DocumentList>
             <Label>
                 <NightIcon />
-                <CheckboxInput onChange={(e) => setLight(e.target.checked)} />
+                <CheckboxInput onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLight(e.target.checked)} />
                 <CheckboxSlider>
                 </CheckboxSlider>
                 <DayIcon />
