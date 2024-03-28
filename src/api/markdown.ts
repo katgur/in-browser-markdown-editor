@@ -1,10 +1,6 @@
 import { Markdown, MarkdownApi } from "../types"
-import { createNew, getDate } from "../util/sample";
+import { createNew, getDate } from "../utils/sample";
 import { v4 as uuid } from 'uuid';
-
-const delay = (fn: () => void) => {
-    return new Promise(resolve => setTimeout(() => resolve(fn()), 1000));
-}
 
 const KEY = "ibme-markdowns";
 
@@ -35,20 +31,20 @@ const localApi: MarkdownApi = {
     addMarkdown: async () => {
         const items = getItems();
         const newItems = [...items, { name: "New Document", date: getDate(), content: "", id: uuid() }];
-        await delay(() => setItems(newItems));
+        setItems(newItems);
         return newItems;
     },
     editMarkdown: async (id, markdown) => {
-        console.log(id, markdown);
         const items = getItems();
-        const newItems = [...items.filter(i => i.id !== id), markdown];
-        await delay(() => setItems(newItems));
-        return newItems;
+        const index = items.findIndex((item) => item.id === id);
+        items[index] = markdown;
+        setItems(items);
+        return items;
     },
     removeMarkdown: async (id) => {
         const items = getItems();
-        const newItems = [...items.filter(i => i.id !== id)];
-        await delay(() => setItems(newItems));
+        const newItems = items.filter(item => item.id !== id);
+        setItems(newItems);
         return newItems;
     }
 }

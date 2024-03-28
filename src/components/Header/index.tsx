@@ -1,15 +1,15 @@
 import styled, { css } from "styled-components";
-import BurgerIcon from "../../assets/icon-menu.svg?react";
-import Logo from "../../assets/logo.svg?react";
-import DocumentIcon from "../../assets/icon-document.svg?react";
-import DeleteIcon from "../../assets/icon-delete.svg?react";
-import SaveIcon from "../../assets/icon-save.svg?react";
+import BurgerIcon from "../../assets/icons/icon-menu.svg?react";
+import Logo from "../../assets/icons/logo.svg?react";
+import DocumentIcon from "../../assets/icons/icon-document.svg?react";
+import DeleteIcon from "../../assets/icons/icon-delete.svg?react";
+import SaveIcon from "../../assets/icons/icon-save.svg?react";
 import React, { useState } from "react";
-import { useMarkdownStore } from "../../store";
+import { useMarkdownStore } from "../../app/store";
 import api from "../../api/markdown";
 
 interface HeaderWrapperProps {
-    isMenuOpen: boolean,
+    $isMenuOpen: boolean,
 }
 
 const HeaderWrapper = styled.header<HeaderWrapperProps>`
@@ -21,7 +21,7 @@ const HeaderWrapper = styled.header<HeaderWrapperProps>`
     }
     transform: translateX(0);
     transition: transform .2s ease-out;
-    ${props => props.isMenuOpen && css`
+    ${props => props.$isMenuOpen && css`
         transform: translateX(250px);
     `};
 `;
@@ -58,10 +58,13 @@ const SaveButton = styled.button`
     font-size: 1em;
     line-height: 1em;
     text-transform: capitalize;
-
+    transition: 250ms;
     svg {
         vertical-align: middle;
     }
+    &:hover {
+        background-color: var(--bgr-accent-hover);
+      }
 `;
 
 const SaveText = styled.span`
@@ -138,7 +141,7 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
         if (!current) {
             return;
         }
-        api.editMarkdown(current.id, { ...current, name: e.currentTarget.value })
+        api.editMarkdown(current.id, current)
             .then(data => setItems(data));
     }
 
@@ -166,7 +169,7 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
     }
 
     return (
-        <HeaderWrapper isMenuOpen={isMenuOpen}>
+        <HeaderWrapper $isMenuOpen={isMenuOpen}>
             <MenuButton onClick={switchMenuOpen}>
                 <BurgerIcon />
             </MenuButton>

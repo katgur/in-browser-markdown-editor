@@ -1,31 +1,34 @@
 import { useEffect, useState } from "react"
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import Editor from "./components/Editor"
+import Header from "../components/Header"
+import Sidebar from "../components/Sidebar"
+import Editor from "../components/Editor"
 import styled, { css } from "styled-components";
 import { useMarkdownStore } from "./store";
-import api from "./api/markdown";
+import api from "../api/markdown";
+import "./App.scss";
 
 interface AppWrapperProps {
-  isLight: boolean,
+  $isLight: boolean,
 }
 
 const AppWrapper = styled.div<AppWrapperProps>`
-  ${props => props.isLight ? css`
+  ${props => props.$isLight ? css`
     --bgr-primary: #fff;
     --text-primary: #000;
     --bgr-secondary: #d8d8d8;
     --text-secondary: #949494;
     --bgr-accent: #ff6b15;
     --text-accent: #fff;
+    --bgr-accent-hover: #ffa783;
   ` :
     css`
     --bgr-primary: #232323;
     --text-primary: #fff;
     --bgr-secondary: #383838;
-    --text-secondary: hsl(0, 0%, 50%);
+    --text-secondary: #808080;
     --bgr-accent: #e15016;
     --text-accent: #fff;
+    --bgr-accent-hover: #eb7a4d;
   `}
   height: 100vh;
   background-color: var(--bgr-primary);
@@ -58,7 +61,7 @@ function App() {
   }, [setCurrent, setItems])
 
   return (
-    <AppWrapper isLight={isLight}>
+    <AppWrapper $isLight={isLight}>
       <Header isMenuOpen={isMenuOpen} switchMenuOpen={() => setMenuOpen(!isMenuOpen)} />
       <Editor isMenuOpen={isMenuOpen} />
       <Sidebar expanded={isMenuOpen} setLight={setLight} />
