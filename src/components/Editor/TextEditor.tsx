@@ -45,8 +45,8 @@ function TextEditor({
   markdown,
 }: TextEditorProps) {
   const setCurrent = useMarkdownStore((state) => state.setCurrent);
-  const onChangeDebounced = useDebounce(
-    (content: string) => markdown && setCurrent({ ...markdown, content })
+  const onChangeDebounced = useDebounce((newCurrent: Markdown) =>
+    setCurrent(newCurrent)
   );
 
   return (
@@ -55,13 +55,13 @@ function TextEditor({
         Markdown
         {!isPreviewVisible && <ShowIcon onClick={showPreview} />}
       </Title>
-      {markdown && (
-        <TextEditorArea
-          key={markdown.id}
-          defaultValue={markdown.content}
-          onChange={(e) => onChangeDebounced(e.target.value)}
-        />
-      )}
+      <TextEditorArea
+        key={markdown.id}
+        defaultValue={markdown.content}
+        onChange={(e) =>
+          onChangeDebounced({ ...markdown, content: e.target.value })
+        }
+      />
     </TextEditorWrapper>
   );
 }

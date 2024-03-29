@@ -185,7 +185,7 @@ function Header({ isMenuOpen, switchMenuOpen }: HeaderProps) {
                     </DocumentHeader>
                     {
                         current &&
-                        <form onSubmit={onNameSubmit}>
+                        <form key={current.id} onSubmit={onNameSubmit}>
                             <DocumentInput name="name" value={current.name} onChange={onChangeName} />
                         </form>
                     }
