@@ -4,6 +4,7 @@ import NightIcon from "../../assets/icons/icon-dark-mode.svg?react";
 import DayIcon from "../../assets/icons/icon-light-mode.svg?react";
 import { useMarkdownStore } from "../../app/store";
 import api from "../../api/markdown";
+import { setTheme } from "../../utils/theme";
 
 interface SidebarWrapperProps {
   $expanded: boolean;
@@ -146,10 +147,11 @@ const CheckboxInput = styled.input.attrs<MyCheckboxProps>((props) => ({
 
 interface SidebarProps {
   expanded: boolean;
+  isLight: boolean;
   setLight: (isLight: boolean) => void;
 }
 
-function Sidebar({ expanded, setLight }: SidebarProps) {
+function Sidebar({ expanded, isLight, setLight }: SidebarProps) {
   const documents = useMarkdownStore((state) => state.items);
   const setCurrent = useMarkdownStore((state) => state.setCurrent);
   const setItems = useMarkdownStore((state) => state.setItems);
@@ -170,8 +172,7 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
             </DocumentIconWrapper>
             <DocumentItemContent>
               <DocumentTitle>{document.date}</DocumentTitle>
-              <DocumentText
-                onClick={() => setCurrent(document)}>
+              <DocumentText onClick={() => setCurrent(document)}>
                 {document.name}
               </DocumentText>
             </DocumentItemContent>
@@ -181,9 +182,11 @@ function Sidebar({ expanded, setLight }: SidebarProps) {
       <Label>
         <NightIcon />
         <CheckboxInput
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setLight(e.target.checked)
-          }
+          checked={isLight}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setLight(e.target.checked);
+            setTheme(e.target.checked);
+          }}
         />
         <CheckboxSlider></CheckboxSlider>
         <DayIcon />

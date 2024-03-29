@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 import { useMarkdownStore } from "./store";
 import api from "../api/markdown";
 import "./App.scss";
+import { getTheme } from "../utils/theme";
 
 interface AppWrapperProps {
   $isLight: boolean,
@@ -46,7 +47,7 @@ const AppWrapper = styled.div<AppWrapperProps>`
 
 function App() {
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
-  const [isLight, setLight] = useState<boolean>(false);
+  const [isLight, setLight] = useState<boolean>(getTheme());
   const setItems = useMarkdownStore(state => state.setItems);
   const setCurrent = useMarkdownStore(state => state.setCurrent);
 
@@ -64,7 +65,7 @@ function App() {
     <AppWrapper $isLight={isLight}>
       <Header isMenuOpen={isMenuOpen} switchMenuOpen={() => setMenuOpen(!isMenuOpen)} />
       <Editor isMenuOpen={isMenuOpen} />
-      <Sidebar expanded={isMenuOpen} setLight={setLight} />
+      <Sidebar expanded={isMenuOpen} isLight={isLight} setLight={setLight} />
     </AppWrapper>
   )
 }
